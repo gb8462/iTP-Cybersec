@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./App.css";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
 export default function Register() {
   const [form, setForm] = useState({
     displayName: "",
@@ -14,28 +17,84 @@ export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function updateField(event) {
     setForm({ ...form, [event.target.name]: event.target.value });
     setMessage("");
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    setMessage("");
 
     if (form.password !== form.confirmPassword) {
       setMessage("Passwords do not match.");
       return;
     }
 
-    if (form.password.length < 8) {
-      setMessage("Password must be at least 8 characters.");
-      return;
-    }
+    setLoading(true);
 
-    setMessage(
-      "Form validated. Account creation will be enabled when Django is connected."
-    );
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          display_name: form.displayName.trim(),
+          username: form.username.trim(),
+          email: form.email.trim(),
+          password: form.password,
+          confirm_password: form.confirmPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const fieldNames = {
+          display_name: "Display name",
+          username: "Username",
+          email: "Email",
+          password: "Password",
+          confirm_password: "Confirm password",
+          non_field_errors: "Error",
+          detail: "Error",
+        };
+
+        const errors = Object.entries(data)
+          .map(([field, messages]) => {
+            const text = Array.isArray(messages)
+              ? messages.join(" ")
+              : String(messages);
+
+            return `${fieldNames[field] || field}: ${text}`;
+          })
+          .join(" ");
+
+        setMessage(errors || "Registration failed. Please try again.");
+        return;
+      }
+
+      setMessage(
+        `Account created successfully, ${data.username}! You can now sign in.`
+      );
+
+      setForm({
+        displayName: "",
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch {
+      setMessage(
+        "Could not connect to the server. Make sure Django is running."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -53,11 +112,13 @@ export default function Register() {
 
         <div className="login-heading">
           <span className="eyebrow">NEW OPERATIVE</span>
-          <h1>Create account<span>.</span></h1>
+          <h1>
+            Create account<span>.</span>
+          </h1>
           <p>Join the cybersecurity team.</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="register-form">
           <div className="field">
             <label htmlFor="displayName">DISPLAY NAME</label>
             <input
@@ -91,7 +152,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="field">
+          <div className="field register-email-field">
             <label htmlFor="email">EMAIL ADDRESS</label>
             <input
               id="email"
@@ -145,12 +206,19 @@ export default function Register() {
             />
           </div>
 
-          <button className="login-button" type="submit">
-            Create account <span>→</span>
+          <button
+            className="login-button register-submit"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Creating account..." : "Create account"}
+            {!loading && <span> →</span>}
           </button>
 
           {message && (
-            <p className="message" role="status">{message}</p>
+            <p className="message" role="status" aria-live="polite">
+              {message}
+            </p>
           )}
         </form>
 
@@ -166,7 +234,9 @@ export default function Register() {
         </div>
       </section>
 
-      <span className="corner-mark">ITP<span>_</span>SEC</span>
+      <span className="corner-mark">
+        ITP<span>_</span>SEC
+      </span>
     </main>
   );
 }

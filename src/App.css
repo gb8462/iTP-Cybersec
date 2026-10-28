@@ -1,4 +1,8 @@
 
+/* =========================================================
+   1. FONTS & GLOBAL STYLES
+   ========================================================= */
+
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap");
 
 :root {
@@ -16,10 +20,21 @@
   --muted: #89939f;
   --border: #242b35;
   --panel: #10151d;
+
+  --orange: #ed963f;
+  --page-bg: #0d0f12;
+  --page-panel: #13161b;
+  --page-border: #272b32;
+  --page-text: #e9e9ec;
+  --page-muted: #858b96;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -42,6 +57,26 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+::selection {
+  color: #080b10;
+  background: var(--orange);
+}
+
+
+/* =========================================================
+   2. LEGACY LANDING PAGE COMPONENTS
+   Kept for components that still use these class names.
+   ========================================================= */
 
 .page {
   min-height: 100vh;
@@ -117,6 +152,8 @@ a {
 }
 
 .status-dot {
+  display: inline-block;
+  flex-shrink: 0;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -131,7 +168,7 @@ a {
   margin: 0 auto;
   padding: 65px 0 55px;
   display: grid;
-  grid-template-columns: 1fr 440px;
+  grid-template-columns: minmax(0, 1fr) 440px;
   align-items: center;
   gap: clamp(40px, 7vw, 110px);
 }
@@ -185,9 +222,9 @@ a {
 }
 
 .feature-icon {
+  padding-top: 3px;
   color: var(--green);
   font: 12px "DM Mono", monospace;
-  padding-top: 3px;
 }
 
 .feature strong {
@@ -235,20 +272,17 @@ a {
 
 .terminal-body {
   padding: 14px 16px;
-  font: 10px/1.9 "DM Mono", monospace;
   color: #a9b4c0;
+  font: 10px/1.9 "DM Mono", monospace;
 }
 
 .terminal-body p {
   margin: 2px 0;
 }
 
-.terminal-body p span {
-  color: var(--green);
-}
-
+.terminal-body p span,
 .terminal-body .terminal-green {
-  color: #70d999;
+  color: var(--green);
 }
 
 .cursor {
@@ -260,11 +294,316 @@ a {
   animation: blink 1s steps(2, start) infinite;
 }
 
-@keyframes blink {
-  to {
-    visibility: hidden;
-  }
+
+/* =========================================================
+   3. LOGIN & REGISTRATION PAGE
+   Shared classes used by Login.jsx and Register.jsx.
+   ========================================================= */
+
+.login-page {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 36px 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 12% 35%, #ed963f0a, transparent 42%),
+    radial-gradient(ellipse at 88% 65%, #1b293a35, transparent 45%),
+    #080b10;
 }
+
+.login-glow {
+  position: fixed;
+  z-index: -1;
+  top: 15%;
+  left: 50%;
+  width: min(700px, 90vw);
+  height: 500px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(ellipse, #ed963f08, transparent 70%);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  margin: auto 0;
+  padding: 30px;
+  border: 1px solid #272b32;
+  border-radius: 12px;
+  background: #101318ee;
+  box-shadow: 0 24px 80px #0003;
+}
+
+.login-container > a {
+  display: flex;
+  justify-content: center;
+}
+
+.login-container .logo {
+  display: block;
+  width: 150px;
+  height: 80px;
+  margin: 0 auto 24px;
+  object-fit: contain;
+}
+
+.login-heading {
+  margin-bottom: 28px;
+}
+
+.login-heading .eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 1.5px;
+}
+
+.login-heading h1 {
+  margin: 0 0 9px;
+  color: #f0f1f3;
+  font-size: clamp(27px, 5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -1.1px;
+  line-height: 1.25;
+}
+
+.login-heading h1 span {
+  color: var(--orange);
+}
+
+.login-heading p {
+  margin: 0;
+  color: var(--page-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* Form fields */
+
+.field {
+  min-width: 0;
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 9px;
+  color: #bac3ce;
+  font-size: 10px;
+}
+
+.field input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 45px;
+  padding: 0 13px;
+  outline: none;
+  border: 1px solid #303946;
+  border-radius: 6px;
+  background: #090d13;
+  color: #f0f4f8;
+  font-size: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input::placeholder {
+  color: #5f6976;
+}
+
+.field input:focus {
+  border-color: #ed963f99;
+  box-shadow: 0 0 0 3px #ed963f12;
+}
+
+.field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Password visibility control */
+
+.password-field {
+  position: relative;
+  min-width: 0;
+}
+
+.password-field input {
+  padding-right: 65px;
+}
+
+.show-password {
+  position: absolute;
+  top: 0;
+  right: 9px;
+  height: 45px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+}
+
+.show-password:hover {
+  color: #ffc17f;
+}
+
+/* Main submit button */
+
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 5px;
+  padding: 0 15px;
+  border: 1px solid var(--orange);
+  border-radius: 6px;
+  background: var(--orange);
+  color: #17110b;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #ffad59;
+  transform: translateY(-1px);
+}
+
+.login-button span {
+  font-size: 17px;
+}
+
+/* Feedback messages */
+
+.message {
+  margin: 14px 0 0;
+  color: var(--orange);
+  font-size: 11px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.signup-prompt {
+  margin-top: 23px;
+  color: var(--page-muted);
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.signup-prompt a {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.signup-prompt a:hover {
+  text-decoration: underline;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff0d;
+  color: #77818e;
+  font: 9px "DM Mono", monospace;
+  letter-spacing: 1px;
+}
+
+.login-footer .status-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.separator {
+  color: #424953;
+}
+
+.corner-mark {
+  position: fixed;
+  right: 24px;
+  bottom: 20px;
+  color: #68717c;
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 1.5px;
+  pointer-events: none;
+}
+
+.corner-mark span {
+  color: var(--orange);
+}
+
+
+/* =========================================================
+   4. REGISTRATION FORM LAYOUT
+   Two columns on desktop; one column on mobile.
+   ========================================================= */
+
+.register-container {
+  max-width: 620px;
+  padding: 28px 32px;
+}
+
+.register-container .logo {
+  width: 140px;
+  height: 70px;
+  margin-bottom: 20px;
+}
+
+.register-container .login-heading {
+  margin-bottom: 25px;
+}
+
+.register-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 15px;
+}
+
+.register-form .field {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* Email and submit button span both columns */
+
+.register-form .register-email-field,
+.register-form .register-submit,
+.register-form .message {
+  grid-column: 1 / -1;
+}
+
+.register-form .register-submit {
+  margin-top: 3px;
+}
+
+.register-container .signup-prompt {
+  margin-top: 22px;
+}
+
+.register-container .login-footer {
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   5. LEGACY LOGIN CARD COMPONENTS
+   Retained for older login layouts if still referenced.
+   ========================================================= */
 
 .login-side {
   width: 100%;
@@ -312,39 +651,6 @@ a {
   line-height: 1.8;
 }
 
-.field {
-  margin-bottom: 21px;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 10px;
-  color: #bac3ce;
-  font-size: 10px;
-}
-
-.field input {
-  width: 100%;
-  height: 47px;
-  padding: 0 13px;
-  outline: none;
-  border: 1px solid #303946;
-  border-radius: 7px;
-  background: #090d13;
-  color: #f0f4f8;
-  font-size: 12px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.field input::placeholder {
-  color: #5f6976;
-}
-
-.field input:focus {
-  border-color: #76f7a588;
-  box-shadow: 0 0 0 3px #76f7a510;
-}
-
 .password-wrap {
   position: relative;
 }
@@ -362,7 +668,6 @@ a {
   background: none;
   color: var(--green);
   font: 10px "DM Mono", monospace;
-  cursor: pointer;
 }
 
 .form-options {
@@ -379,7 +684,6 @@ a {
   align-items: center;
   gap: 8px;
   color: #aab3bf;
-  cursor: pointer;
 }
 
 .remember input {
@@ -395,11 +699,11 @@ a {
 }
 
 .submit-button {
-  width: 100%;
-  height: 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  height: 48px;
   padding: 0 15px;
   border: 1px solid var(--green);
   border-radius: 7px;
@@ -407,7 +711,6 @@ a {
   color: #08110c;
   font-size: 12px;
   font-weight: 700;
-  cursor: pointer;
   transition: transform 0.2s, background 0.2s;
 }
 
@@ -489,13 +792,357 @@ a {
   font-size: 9px;
 }
 
+
+/* =========================================================
+   6. DASHBOARD
+   ========================================================= */
+
+.minimal-dashboard {
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--page-text);
+  font-family: inherit;
+}
+
+.minimal-dashboard * {
+  box-sizing: border-box;
+}
+
+.minimal-header {
+  min-height: 76px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  border-bottom: 1px solid var(--page-border);
+}
+
+.minimal-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.minimal-brand img {
+  display: block;
+  width: 120px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.orange-dot {
+  color: var(--orange);
+}
+
+.minimal-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.minimal-nav a {
+  padding: 28px 0;
+  border-bottom: 2px solid transparent;
+  color: var(--page-muted);
+  font-size: 12px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.minimal-nav a:hover,
+.minimal-nav a.selected {
+  border-bottom-color: var(--orange);
+  color: var(--page-text);
+}
+
+.minimal-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-initial {
+  display: grid;
+  flex-shrink: 0;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border-radius: 50%;
+  background: #292118;
+  color: #f2b16d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profile-name {
+  max-width: 140px;
+  overflow: hidden;
+  color: #c9cbd0;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.minimal-logout {
+  margin-left: 5px;
+  padding: 8px 0 8px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--page-muted);
+  font-size: 11px;
+  transition: color 0.2s;
+}
+
+.minimal-logout:hover {
+  color: var(--orange);
+}
+
+.minimal-content {
+  width: min(100% - 48px, 1080px);
+  margin: 0 auto;
+  padding: 60px 0 24px;
+}
+
+.minimal-welcome {
+  padding-bottom: 35px;
+}
+
+.minimal-kicker {
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+.minimal-welcome h1 {
+  margin: 17px 0 10px;
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 600;
+  letter-spacing: -1.4px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.minimal-welcome h1 span {
+  color: var(--orange);
+}
+
+.minimal-welcome p {
+  margin: 0;
+  color: var(--page-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.minimal-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 52px;
+  border-top: 1px solid var(--page-border);
+  border-bottom: 1px solid var(--page-border);
+}
+
+.minimal-stats > div {
+  display: grid;
+  gap: 11px;
+  padding: 22px 24px;
+  border-right: 1px solid var(--page-border);
+}
+
+.minimal-stats > div:first-child {
+  padding-left: 0;
+}
+
+.minimal-stats > div:last-child {
+  border-right: 0;
+}
+
+.minimal-stats > div > span {
+  color: var(--page-muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+.minimal-stats strong {
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+}
+
+.minimal-stats small {
+  color: var(--page-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.minimal-section {
+  margin: 0 0 48px;
+  scroll-margin-top: 25px;
+}
+
+.minimal-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 19px;
+}
+
+.minimal-section-heading h2 {
+  margin: 7px 0 0;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.muted-count {
+  padding-bottom: 3px;
+  color: var(--page-muted);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.minimal-categories {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.minimal-category {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--page-border);
+  border-radius: 7px;
+  background: var(--page-panel);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.minimal-category:hover {
+  border-color: #51402f;
+  background: #17191e;
+}
+
+.minimal-category-code {
+  grid-column: 1 / -1;
+  width: fit-content;
+  padding: 5px 7px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.minimal-category-code.orange {
+  background: #ed963f17;
+  color: #edaa68;
+}
+
+.minimal-category-code.purple {
+  background: #ad8cf319;
+  color: #bba2f5;
+}
+
+.minimal-category-code.blue {
+  background: #6db9ed18;
+  color: #83bce8;
+}
+
+.minimal-category-code.green {
+  background: #64c99a17;
+  color: #7ed5a9;
+}
+
+.minimal-category-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.category-number {
+  color: #69717d;
+  font-size: 10px;
+}
+
+.minimal-category-info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.category-arrow {
+  color: #737b87;
+  font-size: 16px;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.minimal-category:hover .category-arrow {
+  transform: translate(2px, -2px);
+  color: var(--orange);
+}
+
+.minimal-category-bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 13px;
+  border-top: 1px solid var(--page-border);
+  color: var(--page-muted);
+  font-size: 10px;
+}
+
+.minimal-empty {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-height: 80px;
+  padding: 17px 20px;
+  border-top: 1px solid var(--page-border);
+  border-bottom: 1px solid var(--page-border);
+}
+
+.minimal-empty > span {
+  color: var(--orange);
+  font-size: 20px;
+}
+
+.minimal-empty p {
+  margin: 0;
+  color: var(--page-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.minimal-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 19px 0 0;
+  border-top: 1px solid var(--page-border);
+  color: #707783;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   7. RESPONSIVE STYLES
+   ========================================================= */
+
 @media (max-width: 1000px) {
   .page {
     padding: 0 5%;
   }
 
   .login-layout {
-    grid-template-columns: 1fr 390px;
+    grid-template-columns: minmax(0, 1fr) 390px;
     gap: 35px;
   }
 
@@ -511,9 +1158,20 @@ a {
   .terminal {
     display: none;
   }
+
+  .minimal-header {
+    padding-right: 4%;
+    padding-left: 4%;
+    gap: 18px;
+  }
+
+  .minimal-nav {
+    gap: 20px;
+  }
 }
 
 @media (max-width: 760px) {
+  /* Legacy landing page */
   .navbar {
     height: 78px;
   }
@@ -523,7 +1181,7 @@ a {
   }
 
   .login-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     max-width: 450px;
     padding: 42px 0;
     gap: 35px;
@@ -553,9 +1211,99 @@ a {
   .footer {
     font-size: 8px;
   }
+
+  /* Registration form */
+  .register-container {
+    padding: 25px 22px;
+  }
+
+  .register-form {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .register-form .field,
+  .register-form .register-email-field,
+  .register-form .register-submit,
+  .register-form .message {
+    grid-column: 1;
+  }
+
+  .register-form .field {
+    margin-bottom: 17px;
+  }
+
+  .register-form .register-submit {
+    margin-top: 2px;
+  }
+
+  /* Dashboard */
+  .minimal-header {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 12px 20px;
+  }
+
+  .minimal-brand img {
+    width: 100px;
+    height: 54px;
+  }
+
+  .minimal-nav {
+    order: 3;
+    width: 100%;
+    gap: 24px;
+    overflow-x: auto;
+  }
+
+  .minimal-nav a {
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+
+  .minimal-profile {
+    margin-left: auto;
+  }
+
+  .profile-name {
+    display: none;
+  }
+
+  .minimal-content {
+    width: calc(100% - 36px);
+    padding-top: 38px;
+  }
+
+  .minimal-stats > div {
+    padding: 18px 12px;
+  }
+
+  .minimal-stats > div:first-child {
+    padding-left: 0;
+  }
+
+  .minimal-stats strong {
+    font-size: 23px;
+  }
+
+  .minimal-categories {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
+  .login-page {
+    padding: 20px 12px;
+  }
+
+  .login-container {
+    padding: 24px 18px;
+  }
+
+  .register-container {
+    padding: 22px 16px;
+  }
+
   .nav-status {
     display: none;
   }
@@ -572,44 +1320,68 @@ a {
   .divider small {
     font-size: 7px;
   }
+
+  .minimal-stats > div > span {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .minimal-stats strong {
+    font-size: 20px;
+  }
+
+  .minimal-section-heading {
+    align-items: flex-start;
+  }
+
+  .muted-count {
+    font-size: 8px;
+  }
+
+  .minimal-category {
+    padding: 16px;
+  }
+
+  .minimal-category-info {
+    gap: 8px;
+  }
+
+  .minimal-category-info h3 {
+    font-size: 12px;
+  }
+
+  .minimal-category-bottom {
+    font-size: 9px;
+  }
+
+  .minimal-footer {
+    flex-direction: column;
+    line-height: 1.5;
+  }
+
+  .corner-mark {
+    display: none;
+  }
 }
 
 
-/* Registration page */
-.login-page {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+/* =========================================================
+   8. ANIMATIONS & ACCESSIBILITY
+   ========================================================= */
 
-.register-container {
-  padding-top: 20px;
-  padding-bottom: 20px;
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
 }
-
-.register-container .logo {
-  margin-bottom: 30px;
-}
-
-.register-container .login-heading {
-  margin-bottom: 24px;
-}
-
-.register-container .field {
-  margin-bottom: 16px;
-}
-
-.register-container .signup-prompt {
-  margin-top: 22px;
-}
-
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
+    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
 }
