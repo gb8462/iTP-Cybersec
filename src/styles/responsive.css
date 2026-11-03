@@ -1,0 +1,253 @@
+/* =========================================================
+   7. RESPONSIVE STYLES
+   ========================================================= */
+
+@media (max-width: 1000px) {
+  .page {
+    padding: 0 5%;
+  }
+
+  .login-layout {
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 35px;
+  }
+
+  .login-card {
+    padding: 27px;
+  }
+
+  .intro h1 {
+    font-size: 43px;
+    letter-spacing: -1.8px;
+  }
+
+  .terminal {
+    display: none;
+  }
+
+  .minimal-header {
+    padding-right: 4%;
+    padding-left: 4%;
+    gap: 18px;
+  }
+
+  .minimal-nav {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 760px) {
+  /* Legacy landing page */
+  .navbar {
+    height: 78px;
+  }
+
+  .nav-status {
+    font-size: 8px;
+  }
+
+  .login-layout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 450px;
+    padding: 42px 0;
+    gap: 35px;
+  }
+
+  .intro h1 {
+    font-size: clamp(35px, 8vw, 48px);
+  }
+
+  .intro-text {
+    font-size: 13px;
+  }
+
+  .feature-list {
+    gap: 17px;
+    margin: 27px 0 0;
+  }
+
+  .feature p {
+    font-size: 11px;
+  }
+
+  .login-card {
+    padding: 26px 22px;
+  }
+
+  .footer {
+    font-size: 8px;
+  }
+
+  /* Registration form */
+  .register-container {
+    padding: 25px 22px;
+  }
+
+  .register-form {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .register-form .field,
+  .register-form .register-email-field,
+  .register-form .register-submit,
+  .register-form .message {
+    grid-column: 1;
+  }
+
+  .register-form .field {
+    margin-bottom: 17px;
+  }
+
+  .register-form .register-submit {
+    margin-top: 2px;
+  }
+
+  /* Dashboard */
+  .minimal-header {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 12px 20px;
+  }
+
+  .minimal-brand img {
+    width: 100px;
+    height: 54px;
+  }
+
+  .minimal-nav {
+    order: 3;
+    width: 100%;
+    gap: 24px;
+    overflow-x: auto;
+  }
+
+  .minimal-nav a {
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+
+  .minimal-profile {
+    margin-left: auto;
+  }
+
+  .profile-name {
+    display: none;
+  }
+
+  .minimal-content {
+    width: calc(100% - 36px);
+    padding-top: 38px;
+  }
+
+  .minimal-stats > div {
+    padding: 18px 12px;
+  }
+
+  .minimal-stats > div:first-child {
+    padding-left: 0;
+  }
+
+  .minimal-stats strong {
+    font-size: 23px;
+  }
+
+  .minimal-categories {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .login-page {
+    padding: 20px 12px;
+  }
+
+  .login-container {
+    padding: 24px 18px;
+  }
+
+  .register-container {
+    padding: 22px 16px;
+  }
+
+  .nav-status {
+    display: none;
+  }
+
+  .form-options {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .divider {
+    gap: 6px;
+  }
+
+  .divider small {
+    font-size: 7px;
+  }
+
+  .minimal-stats > div > span {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .minimal-stats strong {
+    font-size: 20px;
+  }
+
+  .minimal-section-heading {
+    align-items: flex-start;
+  }
+
+  .muted-count {
+    font-size: 8px;
+  }
+
+  .minimal-category {
+    padding: 16px;
+  }
+
+  .minimal-category-info {
+    gap: 8px;
+  }
+
+  .minimal-category-info h3 {
+    font-size: 12px;
+  }
+
+  .minimal-category-bottom {
+    font-size: 9px;
+  }
+
+  .minimal-footer {
+    flex-direction: column;
+    line-height: 1.5;
+  }
+
+  .corner-mark {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   8. ANIMATIONS & ACCESSIBILITY
+   ========================================================= */
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

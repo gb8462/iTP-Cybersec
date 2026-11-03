@@ -1,0 +1,303 @@
+/* =========================================================
+   3. LOGIN & REGISTRATION PAGE
+   Shared classes used by Login.jsx and Register.jsx.
+   ========================================================= */
+
+.login-page {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 36px 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 12% 35%, #ed963f0a, transparent 42%),
+    radial-gradient(ellipse at 88% 65%, #1b293a35, transparent 45%),
+    #080b10;
+}
+
+.login-glow {
+  position: fixed;
+  z-index: -1;
+  top: 15%;
+  left: 50%;
+  width: min(700px, 90vw);
+  height: 500px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(ellipse, #ed963f08, transparent 70%);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  margin: auto 0;
+  padding: 30px;
+  border: 1px solid #272b32;
+  border-radius: 12px;
+  background: #101318ee;
+  box-shadow: 0 24px 80px #0003;
+}
+
+.login-container > a {
+  display: flex;
+  justify-content: center;
+}
+
+.login-container .logo {
+  display: block;
+  width: 150px;
+  height: 80px;
+  margin: 0 auto 24px;
+  object-fit: contain;
+}
+
+.login-heading {
+  margin-bottom: 28px;
+}
+
+.login-heading .eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 1.5px;
+}
+
+.login-heading h1 {
+  margin: 0 0 9px;
+  color: #f0f1f3;
+  font-size: clamp(27px, 5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -1.1px;
+  line-height: 1.25;
+}
+
+.login-heading h1 span {
+  color: var(--orange);
+}
+
+.login-heading p {
+  margin: 0;
+  color: var(--page-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* Form fields */
+
+.field {
+  min-width: 0;
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 9px;
+  color: #bac3ce;
+  font-size: 10px;
+}
+
+.field input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 45px;
+  padding: 0 13px;
+  outline: none;
+  border: 1px solid #303946;
+  border-radius: 6px;
+  background: #090d13;
+  color: #f0f4f8;
+  font-size: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input::placeholder {
+  color: #5f6976;
+}
+
+.field input:focus {
+  border-color: #ed963f99;
+  box-shadow: 0 0 0 3px #ed963f12;
+}
+
+.field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Password visibility control */
+
+.password-field {
+  position: relative;
+  min-width: 0;
+}
+
+.password-field input {
+  padding-right: 65px;
+}
+
+.show-password {
+  position: absolute;
+  top: 0;
+  right: 9px;
+  height: 45px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+}
+
+.show-password:hover {
+  color: #ffc17f;
+}
+
+/* Main submit button */
+
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 46px;
+  margin-top: 5px;
+  padding: 0 15px;
+  border: 1px solid var(--orange);
+  border-radius: 6px;
+  background: var(--orange);
+  color: #17110b;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #ffad59;
+  transform: translateY(-1px);
+}
+
+.login-button span {
+  font-size: 17px;
+}
+
+/* Feedback messages */
+
+.message {
+  margin: 14px 0 0;
+  color: var(--orange);
+  font-size: 11px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.signup-prompt {
+  margin-top: 23px;
+  color: var(--page-muted);
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.signup-prompt a {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+.signup-prompt a:hover {
+  text-decoration: underline;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff0d;
+  color: #77818e;
+  font: 9px "DM Mono", monospace;
+  letter-spacing: 1px;
+}
+
+.login-footer .status-dot {
+  width: 6px;
+  height: 6px;
+}
+
+.separator {
+  color: #424953;
+}
+
+.corner-mark {
+  position: fixed;
+  right: 24px;
+  bottom: 20px;
+  color: #68717c;
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 1.5px;
+  pointer-events: none;
+}
+
+.corner-mark span {
+  color: var(--orange);
+}
+
+
+/* =========================================================
+   4. REGISTRATION FORM LAYOUT
+   Two columns on desktop; one column on mobile.
+   ========================================================= */
+
+.register-container {
+  max-width: 620px;
+  padding: 28px 32px;
+}
+
+.register-container .logo {
+  width: 140px;
+  height: 70px;
+  margin-bottom: 20px;
+}
+
+.register-container .login-heading {
+  margin-bottom: 25px;
+}
+
+.register-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 15px;
+}
+
+.register-form .field {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* Email and submit button span both columns */
+
+.register-form .register-email-field,
+.register-form .register-submit,
+.register-form .message {
+  grid-column: 1 / -1;
+}
+
+.register-form .register-submit {
+  margin-top: 3px;
+}
+
+.register-container .signup-prompt {
+  margin-top: 22px;
+}
+
+.register-container .login-footer {
+  margin-top: 22px;
+}

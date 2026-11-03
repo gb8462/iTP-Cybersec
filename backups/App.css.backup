@@ -1385,3 +1385,69 @@ button:disabled {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Dynamic challenge list */
+
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.challenge-card {
+  padding: 20px;
+  background: var(--card-bg, #111318);
+  border: 1px solid var(--border, #252830);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.challenge-card:hover {
+  border-color: var(--orange, #f97316);
+  transform: translateY(-3px);
+}
+
+.challenge-card-top,
+.challenge-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--page-muted, #888);
+}
+
+.challenge-card h3 {
+  margin: 20px 0 10px;
+  font-size: 16px;
+  color: var(--page-text, #fff);
+}
+
+.challenge-card p {
+  min-height: 42px;
+  margin: 0 0 20px;
+  color: var(--page-muted, #999);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.challenge-card-bottom {
+  padding-top: 14px;
+  border-top: 1px solid var(--border, #252830);
+}
+
+.challenge-card-bottom span:first-child {
+  color: var(--orange, #f97316);
+  font-weight: 700;
+}
+
+.challenge-solved {
+  color: #4ade80 !important;
+}
+
+.dashboard-message {
+  margin: 15px 0;
+  color: #f87171;
+  font-size: 13px;
+}
