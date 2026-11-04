@@ -1,4 +1,3 @@
-
 import {
   createContext,
   useContext,
@@ -21,6 +20,32 @@ export function GameProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  async function refreshStats() {
+    const token = sessionStorage.getItem("accessToken");
+
+    if (!token) {
+      throw new Error("Your session has expired. Please sign in again.");
+    }
+
+    const response = await fetch(
+      `${API_BASE_URL}/api/challenges/stats/`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not refresh player statistics.");
+    }
+
+    const data = await response.json();
+    setStats(data);
+
+    return data;
+  }
+
   function logout() {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
@@ -42,7 +67,9 @@ export function GameProvider({ children }) {
     try {
       setUser(JSON.parse(savedUser));
     } catch {
-      sessionStorage.clear();
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
+      sessionStorage.removeItem("currentUser");
       navigate("/", { replace: true });
       return;
     }
@@ -91,6 +118,7 @@ export function GameProvider({ children }) {
     loading,
     error,
     logout,
+    refreshStats,
   };
 
   if (!user) return null;

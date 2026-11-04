@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./Login";
@@ -8,6 +7,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import Overview from "./pages/Overview";
 import Challenges from "./pages/Challenges";
 import ChallengeList from "./pages/ChallengeList";
+import ChallengeDetails from "./pages/ChallengeDetails";
 import Leaderboard from "./pages/Leaderboard";
 
 export default function App() {
@@ -21,6 +21,7 @@ export default function App() {
           <Route path="/dashboard" element={<Overview />} />
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/challenge-list" element={<ChallengeList />} />
+          <Route path="/challenge/:id" element={<ChallengeDetails />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
 

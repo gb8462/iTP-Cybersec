@@ -1,0 +1,347 @@
+/* Challenge card links */
+
+.challenge-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.challenge-card-link .challenge-card {
+  height: 100%;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.challenge-card-link:hover .challenge-card {
+  border-color: var(--orange);
+  transform: translateY(-3px);
+}
+
+/* Challenge details page */
+
+.challenge-details {
+  padding-bottom: 35px;
+}
+
+.detail-back-link {
+  display: inline-block;
+  margin-bottom: 28px;
+  color: var(--page-muted);
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.detail-back-link:hover {
+  color: var(--orange);
+}
+
+.detail-header {
+  margin-bottom: 30px;
+}
+
+.detail-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 25px;
+  margin-top: 15px;
+}
+
+.detail-title-row h1 {
+  margin: 12px 0 0;
+  color: var(--page-text);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  overflow-wrap: anywhere;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-tags span {
+  padding: 6px 10px;
+  border: 1px solid var(--page-border);
+  border-radius: 4px;
+  color: var(--page-muted);
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 0.7px;
+}
+
+.detail-points {
+  display: grid;
+  flex-shrink: 0;
+  justify-items: end;
+  gap: 3px;
+}
+
+.detail-points strong {
+  color: var(--orange);
+  font: 500 30px "DM Mono", monospace;
+}
+
+.detail-points span {
+  color: var(--page-muted);
+  font: 9px "DM Mono", monospace;
+  letter-spacing: 1px;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.85fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.detail-main-panel,
+.detail-submit-panel {
+  min-width: 0;
+  padding: 25px;
+  border: 1px solid var(--page-border);
+  border-radius: 7px;
+  background: var(--page-panel);
+}
+
+.detail-panel-heading {
+  margin-bottom: 23px;
+}
+
+.detail-panel-heading h2 {
+  margin: 8px 0 0;
+  color: var(--page-text);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.detail-description {
+  color: var(--page-text);
+  font-size: 13px;
+  line-height: 2;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.detail-instructions {
+  margin-top: 35px;
+  padding-top: 22px;
+  border-top: 1px solid var(--page-border);
+}
+
+.detail-instructions p {
+  color: var(--page-muted);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.detail-flag-format {
+  margin-top: 18px;
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 0.5px;
+}
+
+.detail-flag-format code {
+  color: var(--orange);
+}
+
+/* Submission form */
+
+.detail-submit-form {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-submit-form label {
+  color: var(--page-muted);
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 1px;
+}
+
+.detail-submit-form input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--page-border);
+  border-radius: 5px;
+  outline: none;
+  background: #090d13;
+  color: var(--page-text);
+  font: 12px "DM Mono", monospace;
+}
+
+.detail-submit-form input:focus {
+  border-color: var(--orange);
+}
+
+.detail-submit-form input::placeholder {
+  color: #56606d;
+}
+
+.detail-submit-form button,
+.detail-back-button {
+  min-height: 43px;
+  padding: 0 15px;
+  border: 1px solid var(--orange);
+  border-radius: 5px;
+  background: var(--orange);
+  color: #080b10;
+  font: 600 11px "DM Mono", monospace;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.detail-submit-form button:hover,
+.detail-back-button:hover {
+  opacity: 0.85;
+}
+
+.detail-submit-form button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.detail-submit-note {
+  display: flex;
+  gap: 9px;
+  margin-top: 22px;
+  color: var(--page-muted);
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+.detail-submit-note span {
+  color: var(--orange);
+  font-weight: 700;
+}
+
+/* Submission feedback */
+
+.detail-feedback {
+  margin-top: 17px;
+  padding: 14px;
+  border: 1px solid var(--page-border);
+  border-radius: 5px;
+}
+
+.detail-feedback strong {
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 1px;
+}
+
+.detail-feedback p {
+  margin: 7px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.detail-feedback.success {
+  border-color: #287d53;
+  background: rgba(40, 125, 83, 0.08);
+}
+
+.detail-feedback.success strong,
+.detail-feedback.success span {
+  color: #55d99a;
+}
+
+.detail-feedback.error {
+  border-color: #a64242;
+  background: rgba(166, 66, 66, 0.08);
+}
+
+.detail-feedback.error strong {
+  color: #ff7777;
+}
+
+.detail-feedback span {
+  display: block;
+  margin-top: 10px;
+  font: 10px "DM Mono", monospace;
+}
+
+/* Solved state */
+
+.detail-solved {
+  display: grid;
+  justify-items: center;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.detail-status-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid #287d53;
+  border-radius: 50%;
+  color: #55d99a;
+  font-size: 23px;
+}
+
+.detail-solved h3 {
+  margin: 16px 0 5px;
+  color: #55d99a;
+  font-size: 16px;
+}
+
+.detail-solved p {
+  color: var(--page-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.detail-solved strong {
+  margin-top: 12px;
+  color: #55d99a;
+  font: 10px "DM Mono", monospace;
+  letter-spacing: 0.8px;
+}
+
+/* Loading and error states */
+
+.detail-state {
+  display: grid;
+  min-height: 250px;
+  align-content: center;
+  justify-items: center;
+  gap: 15px;
+  color: var(--page-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.detail-error {
+  color: #ff7777;
+}
+
+@media (max-width: 760px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-main-panel,
+  .detail-submit-panel {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .detail-points {
+    justify-items: start;
+  }
+}

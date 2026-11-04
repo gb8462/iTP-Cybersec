@@ -1,5 +1,5 @@
+import { Link, useSearchParams } from "react-router-dom";
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useGame } from "../context/GameContext";
 
 const categories = [
@@ -118,22 +118,31 @@ export default function ChallengeList() {
               const solved = solvedIds.includes(challenge.id);
 
               return (
-                <article className="challenge-card" key={challenge.id}>
-                  <div className="challenge-card-top">
-                    <span>{challenge.category_display}</span>
-                    <span className={solved ? "challenge-solved" : ""}>
-                      {solved ? "SOLVED" : challenge.difficulty_display}
-                    </span>
-                  </div>
+                <Link
+                  to={`/challenge/${challenge.id}`}
+                  className="challenge-card-link"
+                  key={challenge.id}
+                >
+                  <article className="challenge-card">
+                    <div className="challenge-card-top">
+                      <span>{challenge.category_display}</span>
 
-                  <h3>{challenge.title}</h3>
-                  <p>{challenge.description}</p>
+                      <span className={solved ? "challenge-solved" : ""}>
+                        {solved ? "SOLVED" : challenge.difficulty_display}
+                      </span>
+                    </div>
 
-                  <div className="challenge-card-bottom">
-                    <span>{challenge.points} PTS</span>
-                    <span>{solved ? "✓ Completed" : "Not solved"}</span>
-                  </div>
-                </article>
+                    <h3>{challenge.title}</h3>
+                    <p>{challenge.description}</p>
+
+                    <div className="challenge-card-bottom">
+                      <span>{challenge.points} PTS</span>
+                      <span>
+                        {solved ? "✓ Completed" : "View challenge →"}
+                      </span>
+                    </div>
+                  </article>
+                </Link>
               );
             })}
           </div>
