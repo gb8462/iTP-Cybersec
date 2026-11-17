@@ -37,11 +37,18 @@
 }
 
 .challenge-card p {
-  min-height: 42px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+
+  min-height: calc(3 * 1.7em);
   margin: 0 0 20px;
+
   color: var(--page-muted, #999);
   font-size: 12px;
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .challenge-card-bottom {
@@ -62,4 +69,168 @@
   margin: 15px 0;
   color: #f87171;
   font-size: 13px;
+}
+
+/* Challenge attachments and external resources */
+
+.detail-resources {
+  margin-top: 32px;
+  padding-top: 25px;
+  border-top: 1px solid var(--page-border);
+}
+
+.detail-resources .detail-panel-heading {
+  margin-bottom: 16px;
+}
+
+.detail-resource-message,
+.detail-resource-error {
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.detail-resource-message {
+  color: var(--page-muted);
+}
+
+.detail-resource-error {
+  color: #ff7777;
+  overflow-wrap: anywhere;
+}
+
+/* Attachment list */
+
+.detail-attachment-list {
+  display: grid;
+  gap: 10px;
+}
+
+.detail-attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--page-border);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.detail-attachment-info {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-file-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid var(--page-border);
+  border-radius: 4px;
+  color: var(--orange);
+  font: 9px "DM Mono", monospace;
+}
+
+.detail-attachment-info div {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.detail-attachment-info strong {
+  color: var(--page-text);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.detail-attachment-info div span {
+  color: var(--page-muted);
+  font: 10px "DM Mono", monospace;
+}
+
+.detail-download-button {
+  min-height: 34px;
+  flex-shrink: 0;
+  padding: 0 10px;
+  border: 1px solid var(--orange);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.detail-download-button:hover:not(:disabled) {
+  background: var(--orange);
+  color: #080b10;
+}
+
+.detail-download-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* External resource links */
+
+.detail-resource-list {
+  display: grid;
+  gap: 10px;
+}
+
+.detail-resource-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px;
+  border: 1px solid var(--page-border);
+  border-radius: 5px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.detail-resource-link:hover {
+  border-color: var(--orange);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.detail-resource-link div {
+  min-width: 0;
+}
+
+.detail-resource-link strong {
+  color: var(--orange);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.detail-resource-link p {
+  margin: 6px 0 0;
+  color: var(--page-muted);
+  font-size: 11px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.detail-resource-link > span {
+  flex-shrink: 0;
+  color: var(--orange);
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  .detail-attachment {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .detail-download-button {
+    width: 100%;
+  }
 }

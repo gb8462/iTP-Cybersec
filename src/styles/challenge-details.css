@@ -120,12 +120,152 @@
   font-weight: 700;
 }
 
+
 .detail-description {
   color: var(--page-text);
   font-size: 13px;
-  line-height: 2;
+  line-height: 1.9;
   overflow-wrap: anywhere;
-  white-space: pre-wrap;
+}
+
+/* Markdown headings */
+.detail-description h1,
+.detail-description h2,
+.detail-description h3,
+.detail-description h4 {
+  margin: 24px 0 12px;
+  color: var(--page-text);
+  line-height: 1.4;
+}
+
+.detail-description h1 {
+  font-size: 21px;
+}
+
+.detail-description h2 {
+  font-size: 18px;
+}
+
+.detail-description h3,
+.detail-description h4 {
+  font-size: 15px;
+}
+
+/* Paragraphs and lists */
+.detail-description p {
+  margin: 0 0 14px;
+}
+
+.detail-description ul,
+.detail-description ol {
+  margin: 12px 0 18px;
+  padding-left: 25px;
+}
+
+.detail-description li {
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+.detail-description li::marker {
+  color: var(--orange);
+}
+
+/* Emphasis */
+.detail-description strong {
+  color: var(--page-text);
+  font-weight: 700;
+}
+
+.detail-description em {
+  color: var(--page-muted);
+}
+
+/* Links */
+.detail-description a {
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.detail-description a:hover {
+  opacity: 0.8;
+}
+
+/* Inline code */
+.detail-description :not(pre) > code {
+  padding: 3px 6px;
+  border: 1px solid var(--page-border);
+  border-radius: 4px;
+  background: #090d13;
+  color: var(--orange);
+  font: 12px "DM Mono", monospace;
+}
+
+/* Code blocks */
+.detail-description pre {
+  margin: 16px 0;
+  padding: 16px;
+  overflow-x: auto;
+  border: 1px solid var(--page-border);
+  border-radius: 5px;
+  background: #090d13;
+}
+
+.detail-description pre code {
+  color: var(--page-text);
+  font: 12px/1.8 "DM Mono", monospace;
+}
+
+/* Blockquotes */
+.detail-description blockquote {
+  margin: 16px 0;
+  padding: 10px 16px;
+  border-left: 3px solid var(--orange);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--page-muted);
+}
+
+/* Tables */
+.detail-description table {
+  display: block;
+  width: 100%;
+  margin: 18px 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.detail-description th,
+.detail-description td {
+  padding: 10px 12px;
+  border: 1px solid var(--page-border);
+  text-align: left;
+}
+
+.detail-description th {
+  background: #090d13;
+  color: var(--orange);
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+}
+
+.detail-description td {
+  color: var(--page-muted);
+}
+
+/* Horizontal rules */
+.detail-description hr {
+  margin: 24px 0;
+  border: 0;
+  border-top: 1px solid var(--page-border);
+}
+
+.detail-description > :first-child {
+  margin-top: 0;
+}
+
+.detail-description > :last-child {
+  margin-bottom: 0;
 }
 
 .detail-instructions {
