@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useGame } from "./context/GameContext";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -14,29 +15,92 @@ const categories = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user } = useGame();
 
-  const [user, setUser] = useState(null);
   const [challenges, setChallenges] = useState([]);
   const [stats, setStats] = useState(null);
-  const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [playerRank, setPlayerRank] = useState(null);
+  const [rankLoading, setRankLoading] = useState(true);
 
+  // Load the current player's rank.
+  useEffect(() => {
+    if (!user?.id) return;
+
+    let cancelled = false;
+
+    async function fetchPlayerRank() {
+      setRankLoading(true);
+
+      try {
+        const token = sessionStorage.getItem("accessToken");
+
+        if (!token) {
+          throw new Error("Your session has expired.");
+        }
+
+        const response = await fetch(
+          `${API_BASE_URL}/api/challenges/leaderboard/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Could not load leaderboard (HTTP ${response.status}).`
+          );
+        }
+
+        const players = await response.json();
+
+        console.log("OVERVIEW USER:", user);
+        console.log("LEADERBOARD DATA:", players);
+
+        const currentPlayer = players.find(
+          (player) =>
+            Number(player.participant_id) === Number(user.id)
+        );
+
+        console.log("MATCHED PLAYER:", currentPlayer);
+
+        if (!cancelled) {
+          setPlayerRank(currentPlayer?.rank ?? null);
+        }
+        
+      } catch (err) {
+        console.error("Could not load player rank:", err);
+
+        if (!cancelled) {
+          setPlayerRank(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setRankLoading(false);
+        }
+      }
+    }
+
+    fetchPlayerRank();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
+
+  // Load challenges and player statistics.
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
-    const savedUser = sessionStorage.getItem("currentUser");
 
-    if (!token || !savedUser) {
+    if (!token || !user) {
       navigate("/", { replace: true });
       return;
     }
 
-    try {
-      setUser(JSON.parse(savedUser));
-    } catch {
-      handleLogout();
-      return;
-    }
+    let cancelled = false;
 
     async function loadDashboard() {
       try {
@@ -44,20 +108,14 @@ export default function Dashboard() {
           Authorization: `Bearer ${token}`,
         };
 
-        const [
-          challengeResponse,
-          statsResponse,
-          leaderboardResponse,
-        ] = await Promise.all([
+        const [challengeResponse, statsResponse] = await Promise.all([
           fetch(`${API_BASE_URL}/api/challenges/`, { headers }),
           fetch(`${API_BASE_URL}/api/challenges/stats/`, { headers }),
-          fetch(`${API_BASE_URL}/api/challenges/leaderboard/`, { headers }),
         ]);
 
         if (
           challengeResponse.status === 401 ||
-          statsResponse.status === 401 ||
-          leaderboardResponse.status === 401
+          statsResponse.status === 401
         ) {
           throw new Error("Your session has expired. Please sign in again.");
         }
@@ -69,26 +127,27 @@ export default function Dashboard() {
         const challengeData = await challengeResponse.json();
         const statsData = await statsResponse.json();
 
-        setChallenges(challengeData);
-        setStats(statsData);
-
-        // Leaderboard is optional for dashboard rendering.
-        if (leaderboardResponse.ok) {
-          const leaderboardData = await leaderboardResponse.json();
-
-          setLeaderboard(
-            Array.isArray(leaderboardData) ? leaderboardData : []
-          );
+        if (!cancelled) {
+          setChallenges(challengeData);
+          setStats(statsData);
         }
       } catch (err) {
-        setError(err.message || "Something went wrong.");
+        if (!cancelled) {
+          setError(err.message || "Something went wrong.");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
     loadDashboard();
-  }, [navigate]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate, user]);
 
   function handleLogout() {
     sessionStorage.removeItem("accessToken");
@@ -101,12 +160,6 @@ export default function Dashboard() {
 
   const displayName = user.display_name || user.username;
   const solvedIds = stats?.solved_challenge_ids || [];
-
-  const playerRanking = leaderboard.find(
-    (player) => Number(player.participant_id) === Number(user.id)
-  );
-
-  const playerRank = playerRanking?.rank ?? "—";
 
   return (
     <main className="minimal-dashboard">
@@ -176,7 +229,11 @@ export default function Dashboard() {
           <div>
             <span>RANK</span>
             <strong>
-              {loading ? "..." : playerRank === "—" ? "—" : `#${playerRank}`}
+              {rankLoading
+                ? "..."
+                : playerRank !== null
+                  ? `#${playerRank}`
+                  : "—"}
             </strong>
           </div>
         </section>
