@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -17,6 +18,7 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [challenges, setChallenges] = useState([]);
   const [stats, setStats] = useState(null);
+  const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -42,12 +44,21 @@ export default function Dashboard() {
           Authorization: `Bearer ${token}`,
         };
 
-        const [challengeResponse, statsResponse] = await Promise.all([
+        const [
+          challengeResponse,
+          statsResponse,
+          leaderboardResponse,
+        ] = await Promise.all([
           fetch(`${API_BASE_URL}/api/challenges/`, { headers }),
           fetch(`${API_BASE_URL}/api/challenges/stats/`, { headers }),
+          fetch(`${API_BASE_URL}/api/challenges/leaderboard/`, { headers }),
         ]);
 
-        if (challengeResponse.status === 401 || statsResponse.status === 401) {
+        if (
+          challengeResponse.status === 401 ||
+          statsResponse.status === 401 ||
+          leaderboardResponse.status === 401
+        ) {
           throw new Error("Your session has expired. Please sign in again.");
         }
 
@@ -60,6 +71,15 @@ export default function Dashboard() {
 
         setChallenges(challengeData);
         setStats(statsData);
+
+        // Leaderboard is optional for dashboard rendering.
+        if (leaderboardResponse.ok) {
+          const leaderboardData = await leaderboardResponse.json();
+
+          setLeaderboard(
+            Array.isArray(leaderboardData) ? leaderboardData : []
+          );
+        }
       } catch (err) {
         setError(err.message || "Something went wrong.");
       } finally {
@@ -82,6 +102,12 @@ export default function Dashboard() {
   const displayName = user.display_name || user.username;
   const solvedIds = stats?.solved_challenge_ids || [];
 
+  const playerRanking = leaderboard.find(
+    (player) => Number(player.participant_id) === Number(user.id)
+  );
+
+  const playerRank = playerRanking?.rank ?? "—";
+
   return (
     <main className="minimal-dashboard">
       <header className="minimal-header">
@@ -100,7 +126,9 @@ export default function Dashboard() {
           <span className="profile-initial">
             {displayName.charAt(0).toUpperCase()}
           </span>
+
           <span className="profile-name">{displayName}</span>
+
           <button onClick={handleLogout} className="minimal-logout">
             Sign out
           </button>
@@ -112,8 +140,14 @@ export default function Dashboard() {
           <span className="minimal-kicker">
             ITP CYBERSEC / OPERATION FLAGFALL
           </span>
-          <h1>Ready when you are, <span>{displayName}</span>.</h1>
-          <p>Find the vulnerabilities. Solve the puzzles. Capture the flags.</p>
+
+          <h1>
+            Ready when you are, <span>{displayName}</span>.
+          </h1>
+
+          <p>
+            Find the vulnerabilities. Solve the puzzles. Capture the flags.
+          </p>
         </section>
 
         {error && (
@@ -141,7 +175,9 @@ export default function Dashboard() {
 
           <div>
             <span>RANK</span>
-            <strong>—</strong>
+            <strong>
+              {loading ? "..." : playerRank === "—" ? "—" : `#${playerRank}`}
+            </strong>
           </div>
         </section>
 
@@ -151,6 +187,7 @@ export default function Dashboard() {
               <span className="minimal-kicker">PICK YOUR DOMAIN</span>
               <h2>Challenges</h2>
             </div>
+
             <span className="muted-count">
               {loading ? "LOADING..." : `${categories.length} CATEGORIES`}
             </span>
@@ -176,6 +213,7 @@ export default function Dashboard() {
                     <span className="category-number">
                       {String(index + 1).padStart(2, "0")}
                     </span>
+
                     <h3>{category.name}</h3>
                   </div>
 
@@ -183,8 +221,11 @@ export default function Dashboard() {
 
                   <div className="minimal-category-bottom">
                     <span>
-                      {loading ? "..." : `${solvedCount} / ${categoryChallenges.length} solved`}
+                      {loading
+                        ? "..."
+                        : `${solvedCount} / ${categoryChallenges.length} solved`}
                     </span>
+
                     <span>
                       {loading
                         ? "Loading"
@@ -205,6 +246,7 @@ export default function Dashboard() {
               <span className="minimal-kicker">TEST YOUR SKILLS</span>
               <h2>Available Challenges</h2>
             </div>
+
             <span className="muted-count">
               {loading ? "..." : `${challenges.length} CHALLENGES`}
             </span>
@@ -228,6 +270,7 @@ export default function Dashboard() {
                   <article className="challenge-card" key={challenge.id}>
                     <div className="challenge-card-top">
                       <span>{challenge.category_display}</span>
+
                       <span className={solved ? "challenge-solved" : ""}>
                         {solved ? "SOLVED" : challenge.difficulty_display}
                       </span>
@@ -253,12 +296,16 @@ export default function Dashboard() {
               <span className="minimal-kicker">WHO'S LEADING?</span>
               <h2>Leaderboard</h2>
             </div>
+
             <span className="muted-count">TOP PLAYERS</span>
           </div>
 
           <div className="minimal-empty">
             <span>—</span>
-            <p>Leaderboard integration is coming next.</p>
+            <p>
+              Visit the Leaderboard page to see the complete player rankings.
+            </p>
+            <Link to="/leaderboard">View full leaderboard ↗</Link>
           </div>
         </section>
 
