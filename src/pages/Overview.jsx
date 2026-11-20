@@ -1,6 +1,10 @@
-
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGame } from "../context/GameContext";
+
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
 const categories = [
   { name: "Web Exploitation", code: "WEB", color: "orange" },
@@ -12,8 +16,65 @@ const categories = [
 export default function Overview() {
   const { user, challenges, stats, loading, error } = useGame();
 
+  const [playerRank, setPlayerRank] = useState(null);
+  const [rankLoading, setRankLoading] = useState(true);
+
   const displayName = user.display_name || user.username;
   const solvedIds = stats?.solved_challenge_ids || [];
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchPlayerRank() {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+
+        if (!token) {
+          throw new Error("Session expired.");
+        }
+
+        const response = await fetch(
+          `${API_BASE_URL}/api/challenges/leaderboard/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Leaderboard request failed: ${response.status}`);
+        }
+
+        const players = await response.json();
+
+        const currentPlayer = players.find(
+          (player) =>
+            Number(player.participant_id) === Number(user.id)
+        );
+
+        if (!cancelled) {
+          setPlayerRank(currentPlayer?.rank ?? null);
+        }
+      } catch (err) {
+        console.error("Failed to load player rank:", err);
+
+        if (!cancelled) {
+          setPlayerRank(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setRankLoading(false);
+        }
+      }
+    }
+
+    fetchPlayerRank();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user.id]);
 
   return (
     <>
@@ -54,7 +115,9 @@ export default function Overview() {
 
         <div>
           <span>RANK</span>
-          <strong>—</strong>
+          <strong>
+            {rankLoading ? "..." : playerRank ? `#${playerRank}` : "—"}
+          </strong>
         </div>
       </section>
 
